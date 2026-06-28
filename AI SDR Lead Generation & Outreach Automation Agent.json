@@ -1,0 +1,2161 @@
+{
+  "name": "AI SDR Lead Generation & Outreach Automation Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=```xml\n<agent>\n\n    <role>\n        Expert B2B ICP Qualification Specialist for AI Automation, Sales Automation, CRM Automation, Workflow Automation, Lead Generation, and Business Process Optimization.\n    </role>\n\n    <objective>\n        Evaluate whether the researched company is an Ideal Customer Profile (ICP) for AI Automation, CRM Automation, Sales Automation, Workflow Automation, and Lead Generation services. Determine whether the company is worth pursuing, identify its strongest automation opportunity, recommend the best department and decision-maker to contact, and provide structured business intelligence for downstream AI agents.\n    </objective>\n\n    <company_research>\n\n        {{ JSON.stringify($('🏢 Company Intelligence Agent').item.json.output) }}\n\n    </company_research>\n\n    <instructions>\n\n        <instruction>Analyze only the provided company research.</instruction>\n\n        <instruction>Never invent, assume, or hallucinate information.</instruction>\n\n        <instruction>If information is unavailable, return \"Unknown\".</instruction>\n\n        <instruction>Preserve all company information for downstream agents.</instruction>\n\n        <instruction>Return the company name exactly as provided.</instruction>\n\n        <instruction>Return products_services, technology_stack, and key_pain_points as JSON arrays.</instruction>\n\n        <instruction>Evaluate every scoring category independently.</instruction>\n\n        <instruction>All category scores must be integers between 0 and 20.</instruction>\n\n        <instruction>Calculate an overall qualification score out of 100.</instruction>\n\n        <instruction>Calculate a qualification confidence score from 0 to 100 based on the completeness and reliability of the research.</instruction>\n\n        <instruction>Recommend the single highest-value automation opportunity.</instruction>\n\n        <instruction>Recommend the most suitable AI Automation service.</instruction>\n\n        <instruction>Recommend the best department to contact.</instruction>\n\n        <instruction>Recommend the most suitable job title to contact.</instruction>\n\n        <instruction>Assign a priority level: High, Medium, or Low.</instruction>\n\n        <instruction>Recommend the next workflow action: Proceed to Lead Finder, Manual Review, or Reject.</instruction>\n\n        <instruction>The qualification reason must be evidence-based and under 60 words.</instruction>\n\n        <instruction>Return ONLY valid JSON.</instruction>\n\n        <instruction>Do not return markdown.</instruction>\n\n        <instruction>The first character must be { and the last character must be }.</instruction>\n\n    </instructions>\n\n    <evaluation_criteria>\n\n        <industry_fit>\n            Maximum 20 points.\n            Higher scores for SaaS, Enterprise Software, Technology, FinTech, HealthTech, Logistics, Martech, E-commerce, and companies with digital operations.\n        </industry_fit>\n\n        <company_size>\n            Maximum 20 points.\n            Enterprise and Mid-Market companies score higher than very small businesses.\n        </company_size>\n\n        <growth_potential>\n            Maximum 20 points.\n            Evaluate hiring, funding, acquisitions, expansion, partnerships, innovation, and market momentum.\n        </growth_potential>\n\n        <automation_need>\n            Maximum 20 points.\n            Evaluate repetitive workflows, CRM usage, customer onboarding, manual processes, operational complexity, and workflow automation opportunities.\n        </automation_need>\n\n        <sales_marketing_complexity>\n            Maximum 20 points.\n            Evaluate lead generation, customer acquisition, marketing operations, revenue operations, customer lifecycle, and sales complexity.\n        </sales_marketing_complexity>\n\n    </evaluation_criteria>\n\n    <qualification_rules>\n\n        Qualified:\n        overall_score >= 80\n        AND\n        qualification_confidence >= 75\n\n        Borderline:\n        overall_score 65-79\n        OR\n        qualification_confidence 60-74\n\n        Not Qualified:\n        overall_score < 65\n        OR\n        qualification_confidence < 60\n\n    </qualification_rules>\n\n</agent>\n```\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1184,
+        496
+      ],
+      "id": "9ca852f8-091f-40d9-97ad-f2f49ed6a7d3",
+      "name": "🎯 ICP Qualification Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n<role>\nExpert B2B Company Intelligence Analyst specializing in Sales Research, Market Intelligence, AI Automation Qualification, and Business Opportunity Discovery.\n</role>\n\n<objective>\nAnalyze the provided company research and extract accurate, structured business intelligence that will be used by downstream AI agents for ICP Qualification, Lead Finding, Outreach Strategy, Email Personalization, and Quality Validation.\n</objective>\n\n<research_data>\n\nCompany Name:\n{{ $('📋 Fetch Leads from Sheet').item.json.Company }}\n\nWebsite:\n{{ $('📋 Fetch Leads from Sheet').item.json.Website }}\n\nResearch:\n{{$json.answer}}\n\n</research_data>\n\n<instructions>\n\n<instruction>\nAnalyze only the provided research.\n</instruction>\n\n<instruction>\nIf the company website is provided in the input, always use it exactly.\nOnly return \"Unknown\" if no website is provided anywhere.\n</instruction>\n\n<instruction>\nNever invent, assume, or hallucinate information.\n</instruction>\n\n<instruction>\nIf information is unavailable, return \"Unknown\".\n</instruction>\n\n<instruction>\nExtract the official company name.\n</instruction>\n\n<instruction>\nExtract the official company website if available.\n</instruction>\n\n<instruction>\nIdentify the primary industry.\n</instruction>\n\n<instruction>\nEstimate company size using only:\nStartup, Small Business, Mid-Market, Enterprise.\n</instruction>\n\n<instruction>\nIdentify the business model such as B2B, B2C, SaaS, Marketplace, Enterprise SaaS, Hybrid, etc.\n</instruction>\n\n<instruction>\nSummarize the company in no more than three concise business-focused sentences.\n</instruction>\n\n<instruction>\nIdentify the company's primary products or services.\n</instruction>\n\n<instruction>\nIdentify the company's target customers.\n</instruction>\n\n<instruction>\nIdentify up to three major business pain points supported by the research.\n</instruction>\n\n<instruction>\nIdentify technologies, software platforms, frameworks, or tools explicitly mentioned.\n</instruction>\n\n<instruction>\nIdentify one recent initiative, acquisition, funding round, partnership, product launch, expansion, or strategic announcement if available.\n</instruction>\n\n<instruction>\nIdentify one potential automation opportunity where AI, CRM, Sales Automation, Workflow Automation, or Business Process Automation could create business value.\n</instruction>\n\n<instruction>\nKeep every field concise.\n</instruction>\n\n<instruction>\nReturn valid JSON only.\n</instruction>\n\n<instruction>\nDo not return markdown.\n</instruction>\n\n</instructions>\n\n</agent>\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        832,
+        496
+      ],
+      "id": "ac916b97-c7ae-4c49-9629-4a502a26c8f6",
+      "name": "🏢 Company Intelligence Agent"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        592
+      ],
+      "id": "deeabe59-736a-4461-a62c-26326d88cfa4",
+      "name": "🚀 Start SDR Workflow"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo",
+          "mode": "list",
+          "cachedResultName": "AI SDR Lead Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1511334809,
+          "mode": "list",
+          "cachedResultName": "Box2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit#gid=1511334809"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -96,
+        592
+      ],
+      "id": "4a4b005b-990a-49b1-8a2d-b54d41ec6b0d",
+      "name": "📋 Fetch Leads from Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PTPMmSbxUDvR1aVN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "=Research company: {{ $('📋 Fetch Leads from Sheet').item.json.Company }}\nWebsite: {{ $('📋 Fetch Leads from Sheet').item.json.Website }}\n\nFind:\n- Company overview\n- Industry\n- Products and services\n- Company size\n- Target customers\n- Recent news\n- Technology stack\n- Growth initiatives",
+        "options": {
+          "search_depth": "advanced",
+          "max_results": 5,
+          "include_answer": "basic",
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        576,
+        496
+      ],
+      "id": "f013e9c1-7efc-4c2a-b29b-9af0f174f0be",
+      "name": "🌐 Search Company Info (Tavily)",
+      "credentials": {
+        "tavilyApi": {
+          "id": "EtV35g7WVH4BCJ6t",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a505b33e-d0c2-45e2-86ba-f0ac11acdd7d",
+              "leftValue": "={{ $json.output.qualified }}",
+              "rightValue": {},
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1584,
+        496
+      ],
+      "id": "d89e6dbb-e042-48d3-8a99-46e3e25ff922",
+      "name": "🔀 Qualified Lead Router"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo",
+          "mode": "list",
+          "cachedResultName": "AI SDR Lead Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1511334809,
+          "mode": "list",
+          "cachedResultName": "Box2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit#gid=1511334809"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company": "={{ $('📋 Fetch Leads from Sheet').item.json.Company }}",
+            "Website": "={{ $('📋 Fetch Leads from Sheet').item.json.Website }}",
+            "ICP Score": "={{ $('🎯 ICP Qualification Agent').item.json.output.overall_score }}",
+            "Qualified": "={{ $('🎯 ICP Qualification Agent').item.json.output.qualified }}",
+            "Status": "Rejected",
+            "Processed Date": "={{ $('🕐 Set Processed Timestamp').item.json.Date }}",
+            "Processed Time": "={{ $('🕐 Set Processed Timestamp').item.json.Time }}",
+            "Rejection Reason": "={{ $('🎯 ICP Qualification Agent').item.json.output.reason }}"
+          },
+          "matchingColumns": [
+            "Company"
+          ],
+          "schema": [
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ICP Score",
+              "displayName": "ICP Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Qualified",
+              "displayName": "Qualified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pain Point 1",
+              "displayName": "Pain Point 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pain Point 2",
+              "displayName": "Pain Point 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pain Point 3",
+              "displayName": "Pain Point 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "QA Score",
+              "displayName": "QA Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Rejection Reason",
+              "displayName": "Rejection Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processed Date",
+              "displayName": "Processed Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processed Time",
+              "displayName": "Processed Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1904,
+        992
+      ],
+      "id": "f1c971ee-51f1-4092-9eeb-ffdde0438a93",
+      "name": "❌ Mark Lead as Rejected",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PTPMmSbxUDvR1aVN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n    <role>\n        Expert SDR Cold Email Copywriter\n    </role>\n\n    <objective>\n        Generate a highly personalized cold email using the company insights, pain points, business impact, value proposition, and CTA.\n        {{ $json.retry_count > 0 ? 'This is retry attempt ' + $json.retry_count + '. Use the quality feedback and improvement suggestions below to write a better email.' : '' }}\n    </objective>\n\n    <personalization_data>\n        {{ JSON.stringify($('✔️ Lead Validation Agent').item.json.output) }}\n    </personalization_data>\n\n    <outreach_strategy>\n        {{ JSON.stringify($('📊 Outreach Strategy Agent').item.json.output) }}\n    </outreach_strategy>\n\n    {{ $json.retry_count > 0 ? '<quality_feedback>' + $json.quality_feedback + '</quality_feedback>' : '' }}\n    {{ $json.retry_count > 0 ? '<improvement_suggestions>' + $json.improvement_suggestions + '</improvement_suggestions>' : '' }}\n\n    <instructions>\n\n        <instruction>\n            Write a concise cold email.\n        </instruction>\n\n        <instruction>\n            Use the hook naturally in the opening sentence.\n        </instruction>\n\n        <instruction>\n            Reference the identified business challenge.\n        </instruction>\n\n        <instruction>\n            Explain the potential business impact.\n        </instruction>\n\n        <instruction>\n            Present the value proposition clearly.\n        </instruction>\n\n        <instruction>\n            End with a simple low-friction CTA.\n        </instruction>\n\n        <instruction>\n            Keep email between 80 and 150 words.\n        </instruction>\n\n        <instruction>\n            Avoid hype, buzzwords, and generic marketing language.\n        </instruction>\n\n        <instruction>\n            Sound human and conversational.\n        </instruction>\n\n        <instruction>\n            Return JSON only.\n        </instruction>\n\n    </instructions>\n\n    <output_format>\n\n        {\n            \"company_name\": \"\",\n            \"subject_line\": \"\",\n            \"email_body\": \"\"\n        }\n\n    </output_format>\n\n</agent>",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        4144,
+        368
+      ],
+      "id": "e5a98952-653d-4f25-9127-c222903aab93",
+      "name": "✉️ Email Generator Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n    <role>\n        Expert B2B SDR Outreach Strategist\n    </role>\n\n    <objective>\n        Analyze the qualified company and create a complete outbound sales strategy.\n\n        Identify the most relevant business pain points, growth priorities, automation opportunities, personalization angles, business impact, value proposition, and outreach CTA that can be used to generate highly personalized SDR emails.\n    </objective>\n\n    <input>\n\n        <company_name>\n            {{$json.output.company_name}}\n        </company_name>\n\n        <industry>\n            {{$json.output.industry}}\n        </industry>\n\n        <company_summary>\n            {{$json.output.summary}}\n        </company_summary>\n\n        <products_services>\n            {{$json.output.products_services}}\n        </products_services>\n\n        <target_customers>\n            {{$json.output.target_customers}}\n        </target_customers>\n\n        <company_size>\n            {{$json.output.company_size}}\n        </company_size>\n\n    </input>\n\n    <instructions>\n\n        <instruction>\n            Analyze the company from sales, marketing, customer acquisition, revenue growth, and operational perspectives.\n        </instruction>\n\n        <instruction>\n            Identify the top 3 business pain points most relevant to the company.\n        </instruction>\n\n        <instruction>\n            Identify the top 3 business priorities currently driving company growth.\n        </instruction>\n\n        <instruction>\n            Identify the top 3 automation opportunities where AI, CRM automation, workflow automation, lead generation, or sales automation can create measurable business value.\n        </instruction>\n\n        <instruction>\n            Create a strong outreach hook based on the company's growth, products, market position, expansion, or operational challenges.\n        </instruction>\n\n        <instruction>\n            Create a natural personalization line that sounds human and company-specific.\n        </instruction>\n\n        <instruction>\n            Explain the likely business impact if the identified pain points are solved.\n        </instruction>\n\n        <instruction>\n            Create a concise value proposition aligned with the identified automation opportunities.\n        </instruction>\n\n        <instruction>\n            Generate a low-friction CTA suitable for cold outreach.\n        </instruction>\n\n        <instruction>\n            Recommend the most suitable automation solution.\n        </instruction>\n\n        <instruction>\n            Avoid generic sales language.\n        </instruction>\n\n        <instruction>\n            Keep outputs concise, practical, and actionable.\n        </instruction>\n\n        <instruction>\n            Tailor every output to the company industry, size, products, and target customers.\n        </instruction>\n\n        <instruction>\n            Return structured output only.\n        </instruction>\n\n    </instructions>\n\n    <output_format>\n\n        <company_name></company_name>\n\n        <pain_points>\n\n            <pain_point_1></pain_point_1>\n            <pain_point_2></pain_point_2>\n            <pain_point_3></pain_point_3>\n\n        </pain_points>\n\n        <business_priorities>\n\n            <priority_1></priority_1>\n            <priority_2></priority_2>\n            <priority_3></priority_3>\n\n        </business_priorities>\n\n        <automation_opportunities>\n\n            <automation_opportunity_1></automation_opportunity_1>\n            <automation_opportunity_2></automation_opportunity_2>\n            <automation_opportunity_3></automation_opportunity_3>\n\n        </automation_opportunities>\n\n        <personalization>\n\n            <hook></hook>\n            <personalization_line></personalization_line>\n            <business_impact></business_impact>\n            <value_proposition></value_proposition>\n            <cta_angle></cta_angle>\n\n        </personalization>\n\n        <recommended_solution>\n\n            <solution></solution>\n\n        </recommended_solution>\n\n    </output_format>\n\n</agent>",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        3712,
+        368
+      ],
+      "id": "4ea160a0-2960-427b-9d5e-c13df5243416",
+      "name": "📊 Outreach Strategy Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n    <role>\n        Expert Email Quality Assurance Reviewer\n    </role>\n\n    <objective>\n        Review the generated cold email and score it across multiple quality dimensions.\n        Provide detailed feedback and improvement suggestions.\n    </objective>\n\n    <email_to_review>\n\n        <subject_line>{{ $('✉️ Email Generator Agent').item.json.output.subject_line }}</subject_line>\n        <email_body>{{ $('✉️ Email Generator Agent').item.json.output.email_body }}</email_body>\n        <company_name>{{ $('✉️ Email Generator Agent').item.json.output.company_name }}</company_name>\n\n    </email_to_review>\n\n    <scoring_criteria>\n\n        <personalization_score max=\"20\">How specific and personalized is the email to the company?</personalization_score>\n        <relevance_score max=\"20\">How relevant is the value proposition to the company's needs?</relevance_score>\n        <clarity_score max=\"15\">How clear and easy to understand is the email?</clarity_score>\n        <value_proposition_score max=\"15\">How strong and compelling is the value proposition?</value_proposition_score>\n        <cta_score max=\"10\">How effective and low-friction is the call to action?</cta_score>\n        <spam_risk_score max=\"10\">How low is the spam risk? (10 = no spam risk)</spam_risk_score>\n        <grammar_score max=\"10\">How correct is the grammar and writing quality?</grammar_score>\n\n    </scoring_criteria>\n\n    <approval_rules>\n\n        Score >= 80 = Approved\n\n        Score < 80 = Needs improvement (provide feedback for retry)\n\n    </approval_rules>\n\n    <instructions>\n\n        <instruction>\n            Review the email objectively using all evaluation criteria.\n        </instruction>\n\n        <instruction>\n            Assign scores for each category based on the max values above.\n        </instruction>\n\n        <instruction>\n            Calculate the final quality score as sum of all category scores out of 100.\n        </instruction>\n\n        <instruction>\n            Approve the email only if the overall quality score is 80 or higher.\n        </instruction>\n\n        <instruction>\n            If the score is below 80, provide specific improvement suggestions.\n        </instruction>\n\n        <instruction>\n            Clearly identify the strengths of the email.\n        </instruction>\n\n        <instruction>\n            Clearly identify the weaknesses of the email.\n        </instruction>\n\n        <instruction>\n            Provide 3 specific actionable suggestions to improve the email.\n        </instruction>\n\n        <instruction>\n            Return JSON only. Do not return markdown.\n        </instruction>\n\n    </instructions>\n\n    <output_format>\n\n        {\n            \"company_name\": \"\",\n\n            \"personalization_score\": 0,\n            \"relevance_score\": 0,\n            \"clarity_score\": 0,\n            \"value_proposition_score\": 0,\n            \"cta_score\": 0,\n            \"spam_risk_score\": 0,\n            \"grammar_score\": 0,\n\n            \"quality_score\": 0,\n\n            \"approved\": false,\n\n            \"strengths\": [\n                \"\"\n            ],\n\n            \"weaknesses\": [\n                \"\"\n            ],\n\n            \"improvement_suggestions\": [\n                \"\",\n                \"\",\n                \"\"\n            ],\n\n            \"feedback\": \"\",\n\n            \"final_subject\": \"\",\n\n            \"final_email\": \"\"\n        }\n\n    </output_format>\n\n</agent>",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        4496,
+        368
+      ],
+      "id": "af485600-419a-4bdc-b763-92e6df9becca",
+      "name": "🔍 Email Quality Checker Agent"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "08c91b50-5f26-44a0-adab-95617adb22d4",
+              "leftValue": "={{ $json.output.quality_score }}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4880,
+        368
+      ],
+      "id": "3ef4e101-0020-44aa-b0fd-58d06f575da2",
+      "name": "📊 Email Quality Gate (Score ≥ 80?)"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo",
+          "mode": "list",
+          "cachedResultName": "AI SDR Lead Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1511334809,
+          "mode": "list",
+          "cachedResultName": "Box2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit#gid=1511334809"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company": "={{ $('📋 Fetch Leads from Sheet').item.json.Company }}",
+            "Website": "={{ $('📋 Fetch Leads from Sheet').item.json.Website }}",
+            "ICP Score": "={{ $('🎯 ICP Qualification Agent').item.json.output.overall_score }}",
+            "Qualified": "={{ $('🎯 ICP Qualification Agent').item.json.output.qualified }}",
+            "Pain Point 1": "={{ $('📊 Outreach Strategy Agent').item.json.output.pain_point_1 }}",
+            "Pain Point 2": "={{ $('📊 Outreach Strategy Agent').item.json.output.pain_point_2 }}",
+            "Pain Point 3": "={{ $('📊 Outreach Strategy Agent').item.json.output.pain_point_3 }}",
+            "Subject Line": "={{ $('🔍 Email Quality Checker Agent').item.json.output.final_subject }}",
+            "QA Score": "={{ $('🔍 Email Quality Checker Agent').item.json.output.quality_score }}",
+            "Status": "Email Drafted",
+            "Processed Date": "={{ $('🕐 Set Processed Timestamp').item.json.Date }}",
+            "Processed Time": "={{ $('🕐 Set Processed Timestamp').item.json.Time }}",
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "Company"
+          ],
+          "schema": [
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ICP Score",
+              "displayName": "ICP Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Qualified",
+              "displayName": "Qualified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Pain Point 1",
+              "displayName": "Pain Point 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Pain Point 2",
+              "displayName": "Pain Point 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Pain Point 3",
+              "displayName": "Pain Point 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "QA Score",
+              "displayName": "QA Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Rejection Reason",
+              "displayName": "Rejection Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Processed Date",
+              "displayName": "Processed Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Processed Time",
+              "displayName": "Processed Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5104,
+        400
+      ],
+      "id": "5128a1c5-595d-4566-92a6-a20730161661",
+      "name": "✅ Mark Lead as Email Drafted",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PTPMmSbxUDvR1aVN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.output.final_subject }}",
+        "message": "=Hi Team,\n\n{{ $('📊 Outreach Strategy Agent').item.json.output.hook }}\n\n{{ $('📊 Outreach Strategy Agent').item.json.output.personalization_line }}\n\nFrom what I found, one area that stands out is:\n\n{{ $('📊 Outreach Strategy Agent').item.json.output.pain_point_1 }}\n\nMany fast-growing companies face similar challenges as they scale, and it often leads to slower sales cycles, operational bottlenecks, and missed revenue opportunities.\n\nWe've been helping B2B teams solve problems like these using AI-powered SDR workflows, CRM automation, lead scoring, and intelligent workflow automation.\n\n{{ $('📊 Outreach Strategy Agent').item.json.output.business_impact }}\n\n{{ $('📊 Outreach Strategy Agent').item.json.output.value_proposition }}\n\nWould you be open to a quick 15-minute conversation next week to see whether something similar could work for your team?\n\nBest regards,\n\nDhruv Khandelwal\nWeb & Automation Developer\ndhruvkhandelwal111@gmail.com\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        5104,
+        208
+      ],
+      "id": "99e69f9c-dea2-4a47-8d8d-3f00010774d9",
+      "name": "📧 Create Gmail Draft",
+      "webhookId": "d147f218-3cae-471c-8cfd-d3490fa301ea",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "p59R0AQpXdQEpdXm",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n<role>\nExpert B2B Lead Finder & Decision Maker Selection Specialist\n</role>\n\n<objective>\nAnalyze the provided Tavily search results and identify the single best decision maker responsible for AI Automation, CRM Automation, Sales Automation, Workflow Automation, Lead Generation, Revenue Operations, or Business Process Optimization initiatives.\n</objective>\n\n<search_results>\n\n{{ JSON.stringify($json.tavily_results) }}\n\n</search_results>\n\n<selection_priority>\n\n<priority>Recommended Job Title from ICP Agent</priority>\n<priority>Recommended Contact Department from ICP Agent</priority>\n<priority>Chief Revenue Officer (CRO)</priority>\n<priority>VP Sales</priority>\n<priority>Head of Sales</priority>\n<priority>Revenue Operations Director</priority>\n<priority>Revenue Operations Manager</priority>\n<priority>Sales Director</priority>\n<priority>Sales Operations Manager</priority>\n<priority>Chief Marketing Officer (CMO)</priority>\n<priority>Marketing Director</priority>\n<priority>Marketing Operations Manager</priority>\n<priority>Chief Operating Officer (COO)</priority>\n<priority>Founder or CEO (Only if no suitable Sales, Marketing, Revenue, or Operations leader exists)</priority>\n\n</selection_priority>\n\n<preferred_sources>\n\n<source>Official Company Website</source>\n<source>Official Leadership Page</source>\n<source>Official Team Page</source>\n<source>Verified LinkedIn Profile</source>\n<source>Company LinkedIn Page</source>\n<source>Crunchbase</source>\n<source>Official Press Release</source>\n<source>Trusted Business News</source>\n\n</preferred_sources>\n\n<reject_roles>\n\n<role>Software Engineer</role>\n<role>Developer</role>\n<role>QA Engineer</role>\n<role>Designer</role>\n<role>Recruiter</role>\n<role>HR</role>\n<role>Talent Acquisition</role>\n<role>Finance</role>\n<role>Legal</role>\n<role>Customer Support</role>\n<role>Customer Success</role>\n<role>Intern</role>\n\n</reject_roles>\n\n<confidence_scoring>\n\nJob Seniority = 20\n\nDecision Authority = 20\n\nDepartment Relevance = 20\n\nSource Reliability = 20\n\nEvidence Quality = 20\n\nTotal = 100\n\n</confidence_scoring>\n\n<instructions>\n\n<instruction>\nAlways search for the recommended job title from the ICP Agent before considering any other executive.\n</instruction>\n\n<instruction>\nChoose the CEO only if no Sales, Revenue, Marketing, or Operations leader can be verified.\n</instruction>\n\n<instruction>\nNever leave any field empty.\nReturn \"Unknown\" when information cannot be verified.\n</instruction>\n\n<instruction>\nAnalyze every Tavily search result together before making a decision. Do not rely on only the first search result.\n</instruction>\n\n<instruction>\nCombine information from all Tavily search results to build the most complete profile possible.\n</instruction>\n\n<instruction>\nIf one search result is missing a field (such as LinkedIn URL, department, or job title), look for that information in the remaining search results before returning \"Unknown\".\n</instruction>\n\n<instruction>\nIf multiple candidates are found, compare them using the selection priority and choose the highest-ranking verified decision maker.\n</instruction>\n\n<instruction>\nIf multiple sources disagree, prefer information from the most reliable source in this order:\n1. Official Company Website\n2. Official Leadership Page\n3. Verified LinkedIn Profile\n4. Company LinkedIn Page\n5. Crunchbase\n6. Official Press Release\n7. Trusted Business News\n</instruction>\n\n<instruction>\nReturn \"Unknown\" only after checking every available search result.\n</instruction>\n\n<instruction>\nNever return duplicate contacts.\n</instruction>\n\n<instruction>\nSearch across ALL Tavily search results before marking any field as \"Unknown\".\n</instruction>\n\n<instruction>\nIf a LinkedIn profile appears in any search result, always return that LinkedIn URL.\n</instruction>\n\n<instruction>\nNever return \"Unknown\" until every search result has been analyzed.\n</instruction>\n\n<instruction>\nIf the person's LinkedIn profile is found on any trusted source, return the LinkedIn URL exactly as found.\n</instruction>\n\n<instruction>\nIf the LinkedIn profile is mentioned but the URL is missing, search the remaining Tavily results before returning \"Unknown\".\n</instruction>\n\n<instruction>\nReturn a business email only if it is explicitly available in the search results.\nNever guess or generate email addresses.\nOtherwise return \"Unknown\".\n</instruction>\n\n<instruction>\nIf the person's location is mentioned in any search result, return it.\nOtherwise return the company's headquarters location if available.\nOtherwise return \"Unknown\".\n</instruction>\n\n<instruction>\nIf multiple job titles exist, always choose the most recent and highest-ranking verified title.\n</instruction>\n\n<instruction>\nInfer the department only from the verified job title.\nNever guess.\n</instruction>\n\n<instruction>\nIncrease source reliability when multiple trusted sources confirm the same person.\n</instruction>\n\n<instruction>\nUse the backup contact only if it is a different verified executive.\n</instruction>\n\n<instruction>\nThe selected person must currently work at the company based on the available evidence.\n</instruction>\n\n<instruction>\nIf a LinkedIn profile exists, always include the LinkedIn URL.\n</instruction>\n\n<instruction>\nIf only the company website confirms the executive but no LinkedIn profile is found, keep the LinkedIn URL as \"Unknown\" and reduce the confidence score.\n</instruction>\n\n<instruction>\nConfidence Score Guide:\n90–100 = Official website + Verified LinkedIn + Strong evidence.\n75–89 = Official website + Multiple trusted sources.\n60–74 = Only one trusted source or incomplete profile.\nBelow 60 = Weak or conflicting evidence.\n</instruction>\n\n<instruction>Analyze every Tavily search result before selecting a contact.</instruction>\n\n<instruction>Select only ONE primary decision maker.</instruction>\n\n<instruction>Prefer the ICP Agent's recommended department and recommended job title.</instruction>\n\n<instruction>Verify that the person currently works at the company whenever possible.</instruction>\n\n<instruction>Prefer official company pages over third-party websites.</instruction>\n\n<instruction>\nReduce confidence when:\n\n- LinkedIn cannot be verified\n- Official company page is missing\n- Decision maker is inferred instead of confirmed\n- Only fallback executives are found\n</instruction>\n\n<instruction>Prefer verified LinkedIn profiles over unverified sources.</instruction>\n\n<instruction>Never invent names, job titles, LinkedIn URLs, or departments.</instruction>\n\n<instruction>If evidence is weak, lower the confidence score.</instruction>\n\n<instruction>If no reliable contact exists, set lead_found to false and confidence_score below 60.</instruction>\n\n<instruction>Select one backup contact only if another reliable executive exists.</instruction>\n\n<instruction>Keep selection_reason under 40 words.</instruction>\n\n<instruction>Return ONLY valid JSON.</instruction>\n\n<instruction>Do not return markdown.</instruction>\n\n</instructions>\n\n</agent>",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2656,
+        368
+      ],
+      "id": "d5e17630-3f44-4785-89d1-0e0aea81c796",
+      "name": "🕵️ Lead Finder Agent"
+    },
+    {
+      "parameters": {
+        "query": "={{$json.output.company_name}} leadership team",
+        "options": {
+          "topic": "general",
+          "search_depth": "advanced",
+          "max_results": 5,
+          "include_answer": "basic",
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        160
+      ],
+      "id": "23ef0a54-03bc-4e20-9051-d603aab11301",
+      "name": "🔎 Search Leadership Team",
+      "credentials": {
+        "tavilyApi": {
+          "id": "EtV35g7WVH4BCJ6t",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{$json.output.company_name}} executive team",
+        "options": {
+          "topic": "general",
+          "search_depth": "advanced",
+          "max_results": 5,
+          "include_answer": "basic",
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        352
+      ],
+      "id": "e9f456b0-a7a2-46c6-99ab-4b2f0518f8d5",
+      "name": "🔎 Search Executive Team",
+      "credentials": {
+        "tavilyApi": {
+          "id": "EtV35g7WVH4BCJ6t",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "={{$json.output.company_name}} {{$json.output.recommended_job_title}} LinkedIn",
+        "options": {
+          "topic": "general",
+          "search_depth": "advanced",
+          "max_results": 5,
+          "include_answer": "basic",
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        544
+      ],
+      "id": "50a35b2e-11c5-4eca-8e17-d860660e5b36",
+      "name": "🔎 Search Decision Maker LinkedIn",
+      "credentials": {
+        "tavilyApi": {
+          "id": "EtV35g7WVH4BCJ6t",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "=site:linkedin.com {{$json.output.company_name}} {{$json.output.recommended_job_title}}",
+        "options": {
+          "topic": "general",
+          "search_depth": "advanced",
+          "max_results": 5,
+          "include_answer": "basic",
+          "include_raw_content": false
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        736
+      ],
+      "id": "2ef73535-7f6e-498d-8281-26c820889efc",
+      "name": "🔎 Site:LinkedIn Decision Maker",
+      "credentials": {
+        "tavilyApi": {
+          "id": "EtV35g7WVH4BCJ6t",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2208,
+        336
+      ],
+      "id": "3d369e70-3153-4688-b8c1-6b12734218b1",
+      "name": "🔗 Merge Search Results"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e2698339-cd90-4319-b21d-9bf89fcf758f",
+              "leftValue": "={{ $('📋 Fetch Leads from Sheet').item.json.Status }}",
+              "rightValue": "Pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        592
+      ],
+      "id": "2a514ab9-6e97-473d-9d3b-a2647bd18d03",
+      "name": "🔍 Is Lead Status Pending?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc11635b-68fe-45b6-bb24-15a2d6aaa890",
+              "name": "Date",
+              "value": "={{ $now.setZone('Asia/Kolkata').toFormat('dd-MM-yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "c74b26a8-8c94-406c-b2fb-eeabbecf7c91",
+              "name": "Time",
+              "value": "={{ $now.setZone('Asia/Kolkata').toFormat('HH:mm:ss') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        592
+      ],
+      "id": "a1eea083-2607-43d1-b348-317cc0ec3898",
+      "name": "🕐 Set Processed Timestamp"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo",
+          "mode": "list",
+          "cachedResultName": "AI SDR Lead Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1511334809,
+          "mode": "list",
+          "cachedResultName": "Box2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit#gid=1511334809"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Email Drafted",
+            "Company": "={{ $('📋 Fetch Leads from Sheet').item.json.Company }}"
+          },
+          "matchingColumns": [
+            "Company"
+          ],
+          "schema": [
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ICP Score",
+              "displayName": "ICP Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Qualified",
+              "displayName": "Qualified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pain Point 1",
+              "displayName": "Pain Point 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pain Point 2",
+              "displayName": "Pain Point 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pain Point 3",
+              "displayName": "Pain Point 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject Line",
+              "displayName": "Subject Line",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "QA Score",
+              "displayName": "QA Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Rejection Reason",
+              "displayName": "Rejection Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processed Date",
+              "displayName": "Processed Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Processed Time",
+              "displayName": "Processed Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        688
+      ],
+      "id": "7bbf4477-6640-4b3b-99c0-ac8021d8efeb",
+      "name": "✅ Mark Lead as Processed",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PTPMmSbxUDvR1aVN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n```\n<role>\n    Expert B2B Lead Validation Specialist\n</role>\n\n<objective>\n    Validate whether the identified contact is the most suitable decision-maker for AI Automation, Sales Automation, CRM Automation, Lead Generation, Workflow Automation, and Business Process Optimization outreach.\n</objective>\n\n<lead_information>\n\n    {{ JSON.stringify($json.output) }}\n\n</lead_information>\n\n<instructions>\n\n    <instruction>\n        Analyze the identified lead and verify whether they are the right person to contact.\n    </instruction>\n\n    <instruction>\n        Validate the lead based on their job title, department, seniority, responsibilities, and likely purchasing influence.\n    </instruction>\n\n    <instruction>\n        Prefer decision-makers such as:\n        - CEO\n        - Founder\n        - Co-Founder\n        - Managing Director\n        - Chief Revenue Officer (CRO)\n        - VP Sales\n        - Head of Sales\n        - Sales Director\n        - Revenue Operations Leader\n        - Head of Marketing\n        - VP Marketing\n        - Chief Marketing Officer (CMO)\n        - Chief Operating Officer (COO)\n        - Head of Operations\n        - Chief Technology Officer (CTO) (only if the solution is highly technical)\n    </instruction>\n\n    <instruction>\n        Reject contacts such as:\n        - Software Engineer\n        - Intern\n        - Recruiter\n        - HR Executive\n        - Customer Support\n        - Finance Executive\n        - Individual Contributor without purchasing authority\n    </instruction>\n\n    <instruction>\n        Estimate a confidence score between 0 and 100 based on the likelihood that this person is the correct decision-maker.\n    </instruction>\n\n    <instruction>\n        Explain why the lead is accepted or rejected.\n    </instruction>\n\n    <instruction>\n        If the lead is not suitable, recommend searching for a better contact.\n    </instruction>\n\n    <instruction>\n        Return JSON only.\n    </instruction>\n\n    <instruction>\n        Do not return markdown.\n    </instruction>\n\n</instructions>\n\n<output_format>\n\n    {\n        \"company_name\": \"\",\n        \"lead_name\": \"\",\n        \"job_title\": \"\",\n        \"department\": \"\",\n        \"decision_maker\": true,\n        \"confidence_score\": 0,\n        \"validated\": true,\n        \"reason\": \"\",\n        \"recommendation\": \"\"\n    }\n\n</output_format>\n```\n\n</agent>\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        3360,
+        368
+      ],
+      "id": "b5036a12-607b-48ed-8acb-7a796bba8196",
+      "name": "✔️ Lead Validation Agent"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 816,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "55c0dea6-49ce-49f6-93b7-d9bf0f767274",
+      "name": "📝 Workflow Overview Notes"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<agent>\n\n<role>\nExpert B2B Lead Enrichment Specialist\n</role>\n\n<objective>\nEnrich the selected decision maker using the provided search results. Verify and complete missing information such as LinkedIn profile, current job title, department, location, work email (only if explicitly available), profile source, and confidence score. Never invent or guess information.\n\n</objective>\n\n<lead_information>\n\n{{ JSON.stringify($json) }}\n\n</lead_information>\n\n<instructions>\n\n<instruction>\nAnalyze ALL search results before filling any field.\n</instruction>\n\n<instruction>\nCombine information from multiple sources to build the most complete profile.\n</instruction>\n\n<instruction>\nPrefer official company pages over third-party websites.\n</instruction>\n\n<instruction>\nPrefer verified LinkedIn profiles.\n</instruction>\n\n<instruction>\nNever generate or guess an email address.\n</instruction>\n\n<instruction>\nReturn a work email only if it explicitly appears in the search results.\n</instruction>\n\n<instruction>\nIf LinkedIn exists anywhere in the search results, always return it.\n</instruction>\n\n<instruction>\nVerify that the person currently works at the company.\n</instruction>\n\n<instruction>\nIf multiple job titles exist, choose the newest verified title.\n</instruction>\n\n<instruction>\nIf multiple locations exist, prefer the LinkedIn location, then the company website.\n</instruction>\n\n<instruction>\nReturn \"Unknown\" only after checking every search result.\n</instruction>\n\n<instruction>\nNever leave any field blank.\n</instruction>\n\n<instruction>\nConfidence Score Guide:\n\n95–100 = Official Website + Verified LinkedIn + Multiple Sources\n\n85–94 = Verified LinkedIn + Trusted Sources\n\n70–84 = Trusted Sources Only\n\n50–69 = Partial Evidence\n\nBelow 50 = Weak Evidence\n\n</instruction>\n\n<instruction>\nReturn ONLY valid JSON.\n</instruction>\n\n<instruction>\nDo not return markdown.\n</instruction>\n\n</instructions>\n\n</agent>",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        3008,
+        368
+      ],
+      "id": "f0390286-295f-4d87-bbb7-c11f32d20b2b",
+      "name": "🔬 Lead Enrichment Agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all incoming Tavily search results\nconst allItems = $input.all();\n\n// Combine all results into one array\nconst tavilyResults = allItems.map(item => item.json);\n\nreturn [\n  {\n    json: {\n      total_results: tavilyResults.length,\n      tavily_results: tavilyResults\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        368
+      ],
+      "id": "32f64f38-d16b-4ebe-9e5f-0ad60f93b41d",
+      "name": "⚙️ Group Results by Company"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "09c87bcb-68d1-4b31-80f3-d0b1b213b7a0",
+              "name": "retry_count",
+              "value": "={{ ($json.retry_count || 0) + 1 }}",
+              "type": "number"
+            },
+            {
+              "id": "e8d6a110-0675-4587-8617-65225883c8a5",
+              "name": "quality_feedback",
+              "value": "={{ $json.output.feedback }}",
+              "type": "string"
+            },
+            {
+              "id": "6818283d-202f-4793-9875-78f8bbe2805b",
+              "name": "improvement_suggestions",
+              "value": "={{ JSON.stringify($json.output.improvement_suggestions) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5104,
+        592
+      ],
+      "id": "7d270252-1859-4076-8a9e-575d07a5ce10",
+      "name": "🔄 Increment Retry Counter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "fa4ea7c0-4756-4960-9fa6-714fec926bef",
+              "leftValue": "={{ $json.retry_count }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        5328,
+        656
+      ],
+      "id": "b6500731-ec0e-4045-b291-1250a2114321",
+      "name": "⚠️ Max Retries Reached? (< 3)"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo",
+          "mode": "list",
+          "cachedResultName": "AI SDR Lead Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1511334809,
+          "mode": "list",
+          "cachedResultName": "Box2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1goru9n-Q0n9YL58u-di3-HuW584g72PL9I7ImWeSaIo/edit#gid=1511334809"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company": "={{ $('📋 Fetch Leads from Sheet').item.json.Company }}",
+            "Status": "Email Failed",
+            "QA Score": "={{ $('🔍 Email Quality Checker Agent').item.json.output.quality_score }}",
+            "Rejection Reason": "={{ $('🔍 Email Quality Checker Agent').item.json.output.feedback }}",
+            "Processed Date": "={{ $('🕐 Set Processed Timestamp').item.json.Date }}",
+            "Processed Time": "={{ $('🕐 Set Processed Timestamp').item.json.Time }}"
+          },
+          "matchingColumns": [
+            "Company"
+          ],
+          "schema": [
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "QA Score",
+              "displayName": "QA Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Rejection Reason",
+              "displayName": "Rejection Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processed Date",
+              "displayName": "Processed Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processed Time",
+              "displayName": "Processed Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5552,
+        656
+      ],
+      "id": "f0bdbcb2-8bf9-4f68-aa3f-b47247ab2b47",
+      "name": "❌ Mark Lead as Email Failed",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PTPMmSbxUDvR1aVN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.5",
+          "mode": "list",
+          "cachedResultName": "gpt-5.5"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        720
+      ],
+      "id": "e1873a1d-a0ac-4ac1-8e83-f7ce9a1924a6",
+      "name": "🧠 Company Research",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n  \"company_website\": \"https://www.shopify.com\",\n  \"industry\": \"E-commerce Platform\",\n  \"company_size\": \"Enterprise\",\n  \"business_model\": \"SaaS\",\n\n  \"summary\": \"Shopify provides an e-commerce platform that enables businesses to build, manage, and grow online stores worldwide.\",\n\n  \"products_services\": [\n    \"E-commerce Platform\",\n    \"Shopify Payments\",\n    \"Shopify POS\"\n  ],\n\n  \"target_customers\": \"Small, Medium, and Enterprise Businesses\",\n\n  \"key_pain_points\": [\n    \"Merchant onboarding complexity\",\n    \"International commerce challenges\",\n    \"Revenue operations scalability\"\n  ],\n\n  \"technology_stack\": [\n    \"Ruby on Rails\",\n    \"React\",\n    \"GraphQL\"\n  ],\n\n  \"recent_initiative\": \"Expansion of AI-powered commerce features.\",\n\n  \"automation_opportunity\": \"AI-powered CRM and Sales Workflow Automation\"\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        720
+      ],
+      "id": "fe1ff9be-154e-4d51-9f6a-c7eae084f24b",
+      "name": "📄 Company Research Data"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        720
+      ],
+      "id": "f49541b6-71bd-46f9-8ef2-bfa02c03630c",
+      "name": "🧠 ICP Scoring",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n  \"company_website\": \"https://www.shopify.com\",\n  \"industry\": \"E-commerce Platform\",\n  \"company_size\": \"Enterprise\",\n  \"business_model\": \"SaaS\",\n\n  \"summary\": \"Shopify is a leading commerce platform that enables businesses to build, manage, and scale online stores worldwide.\",\n\n  \"products_services\": [\n    \"E-commerce Platform\",\n    \"Shopify Payments\",\n    \"Shopify POS\"\n  ],\n\n  \"target_customers\": \"Small, Medium, and Enterprise Businesses\",\n\n  \"technology_stack\": [\n    \"Ruby on Rails\",\n    \"React\",\n    \"GraphQL\"\n  ],\n\n  \"key_pain_points\": [\n    \"Merchant onboarding complexity\",\n    \"International commerce challenges\",\n    \"Revenue operations scalability\"\n  ],\n\n  \"industry_fit_score\": 19,\n  \"company_size_score\": 20,\n  \"growth_potential_score\": 18,\n  \"automation_need_score\": 19,\n  \"sales_marketing_complexity_score\": 18,\n\n  \"overall_score\": 94,\n  \"qualification_confidence\": 96,\n\n  \"qualified\": true,\n\n  \"qualification_status\": \"Qualified\",\n\n  \"automation_opportunity\": \"AI-powered CRM and Sales Workflow Automation\",\n\n  \"recommended_service\": \"AI SDR + CRM Workflow Automation\",\n\n  \"recommended_contact_department\": \"Sales\",\n\n  \"recommended_job_title\": \"VP Sales\",\n\n  \"priority_level\": \"High\",\n\n  \"next_action\": \"Proceed to Lead Finder\",\n\n  \"reason\": \"Large enterprise SaaS company with complex sales operations and significant workflow automation opportunities.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1328,
+        720
+      ],
+      "id": "38298519-5f9a-4c86-8f80-7d1359a67c59",
+      "name": "📄 ICP Score"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2976,
+        592
+      ],
+      "id": "d06c2083-fd1b-4cb0-8c38-06566f75aa89",
+      "name": "🧠 Lead Enrichment",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n\n  \"first_name\": \"Tobi\",\n\n  \"last_name\": \"Lütke\",\n\n  \"full_name\": \"Tobi Lütke\",\n\n  \"current_job_title\": \"Chief Executive Officer\",\n\n  \"department\": \"Executive\",\n\n  \"linkedin_url\": \"https://www.linkedin.com/in/tobilutke\",\n\n  \"work_email\": \"Unknown\",\n\n  \"location\": \"Ottawa, Canada\",\n\n  \"company_website\": \"https://www.shopify.com\",\n\n  \"profile_source\": \"Official Shopify Leadership Page\",\n\n  \"email_source\": \"Unknown\",\n\n  \"source_reliability\": \"High\",\n\n  \"employment_verified\": true,\n\n  \"confidence_score\": 96,\n\n  \"enrichment_status\": \"Completed\",\n\n  \"notes\": \"LinkedIn verified. Current role confirmed from official company website.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3152,
+        592
+      ],
+      "id": "02887018-4936-4a6c-ab1b-2a73b86236e9",
+      "name": "📄 Lead Enrichment"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3344,
+        592
+      ],
+      "id": "c2c291ea-ce96-41c7-95d0-5f64d8483137",
+      "name": "🧠 Lead Validation",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Notion\",\n  \"lead_name\": \"Jane Smith\",\n  \"job_title\": \"VP Sales\",\n  \"department\": \"Sales\",\n  \"decision_maker\": true,\n  \"confidence_score\": 92,\n  \"validated\": true,\n  \"reason\": \"The contact is a senior sales leader with purchasing influence over sales automation tools.\",\n  \"recommendation\": \"Proceed with personalized outreach.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3520,
+        592
+      ],
+      "id": "200015cb-3c42-4e22-9648-e9e812c0a223",
+      "name": "📄 Lead Validation"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2-pro",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2-pro"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3696,
+        592
+      ],
+      "id": "6582e223-3a78-49b7-bb3f-128c487295f6",
+      "name": "🧠 Outreach Strategy",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n\n  \"pain_point_1\": \"Lead qualification challenges\",\n  \"pain_point_2\": \"Sales scalability\",\n  \"pain_point_3\": \"Partner attribution complexity\",\n\n  \"priority_1\": \"Revenue growth\",\n  \"priority_2\": \"Operational efficiency\",\n  \"priority_3\": \"Sales productivity\",\n\n  \"automation_opportunity_1\": \"AI SDR\",\n  \"automation_opportunity_2\": \"CRM Automation\",\n  \"automation_opportunity_3\": \"Lead Scoring\",\n\n  \"hook\": \"Scaling merchant acquisition and onboarding globally creates operational complexity.\",\n\n  \"personalization_line\": \"I noticed Shopify continues expanding its AI-powered commerce ecosystem and international merchant network.\",\n\n  \"business_impact\": \"Improving lead qualification and onboarding workflows could increase merchant conversion while reducing operational costs.\",\n\n  \"value_proposition\": \"AI-driven CRM and workflow automation can streamline merchant acquisition and lifecycle management.\",\n\n  \"cta_angle\": \"Worth exploring whether automation could improve merchant activation and revenue efficiency.\",\n\n  \"recommended_solution\": \"AI SDR and CRM workflow automation\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3856,
+        592
+      ],
+      "id": "de4ca577-e8c8-4ef7-8e3e-3695c0765017",
+      "name": "📄 Outreach Strategy"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2656,
+        592
+      ],
+      "id": "60af3e3e-00ac-4b8d-a1ca-dc9752ab58f6",
+      "name": "🧠 Lead Finder ",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n  \"first_name\": \"Tobi\",\n  \"last_name\": \"Lütke\",\n  \"full_name\": \"Tobi Lütke\",\n  \"job_title\": \"Chief Executive Officer\",\n  \"department\": \"Executive\",\n  \"linkedin_url\": \"\",\n  \"email\": \"\",\n  \"location\": \"Ottawa, Canada\",\n  \"profile_source\": \"Official Shopify Leadership Page\",\n  \"source_reliability\": \"High\",\n  \"decision_authority\": \"High\",\n  \"confidence_score\": 82,\n  \"lead_found\": true,\n  \"lead_type\": \"Executive Fallback\",\n  \"selection_reason\": \"No verified Sales or Revenue executive was found. The CEO is the highest-ranking executive with purchasing authority.\",\n  \"backup_contact\": {\n    \"full_name\": \"Harley Finkelstein\",\n    \"job_title\": \"President\",\n    \"linkedin_url\": \"\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2800,
+        592
+      ],
+      "id": "7011f395-4003-4e2e-b26b-14e31eb06809",
+      "name": "📄 Lead Finder"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4160,
+        592
+      ],
+      "id": "9c073e50-5a91-4d8a-aae5-fca6ae37a56b",
+      "name": "🧠 Email Generator",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"company_name\": \"Shopify\",\n  \"subject_line\": \"Reducing merchant onboarding friction at Shopify\",\n  \"email_body\": \"Hi Team,\\n\\nI noticed Shopify continues expanding its AI-powered commerce ecosystem.\\n\\nAs merchant acquisition scales, lead qualification and onboarding complexity often increase.\\n\\nWe've helped companies automate lead routing, qualification, CRM workflows, and onboarding processes to improve conversion rates while reducing operational effort.\\n\\nWould it be worth a quick conversation to explore whether similar opportunities exist at Shopify?\\n\\nBest regards\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4320,
+        592
+      ],
+      "id": "1f2d7789-8803-4b05-9124-bc08f6a6ad10",
+      "name": "📄 Generated Email"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4496,
+        592
+      ],
+      "id": "1195d05d-6ed1-4bd2-85a6-58d3e749d54f",
+      "name": "🧠 Email QA",
+      "credentials": {
+        "openAiApi": {
+          "id": "8EyoCGxGbgbRrU1g",
+          "name": "OpenAI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"company_name\": \"Shopify\",\n\n\"personalization_score\": 18,\n\"relevance_score\": 19,\n\"clarity_score\": 14,\n\"value_proposition_score\": 14,\n\"cta_score\": 9,\n\"spam_risk_score\": 10,\n\"grammar_score\": 10,\n\n\"quality_score\": 94,\n\n\"approved\": true,\n\n\"feedback\": \"\",\n\n\"final_subject\": \"Quick idea to improve merchant onboarding efficiency\",\n\n\"final_email\": \"Email content here\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4640,
+        592
+      ],
+      "id": "59a03d84-4a4b-4df7-b750-fa004dff55cb",
+      "name": "📄 Email QA Result"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 448,
+        "width": 1424,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2592,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "8d41e42b-775e-4088-9cce-54d912c25c26",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 480,
+        "width": 704,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "5e00b3f3-fbc8-49ea-9dd0-819607811cba",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 448,
+        "width": 704,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4080,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "0ea811ef-3ddf-4edf-92ea-83eb3bcb99b3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Company & Qualification\n",
+        "height": 96,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "c6ef899a-cf6e-4efe-b7a6-0bc535e078ea",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "##   Tavily Search Engine",
+        "height": 96,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "54065c26-1175-4d80-bd68-4c1f7d04107b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Lead - Enrich - Validation - Outreach",
+        "height": 96,
+        "width": 352,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3184,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "cab61150-e1a4-4807-bb76-86c8b5b5757a",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Email & Quality Checker",
+        "height": 96,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4304,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "eca3bc66-e409-487b-a11c-e9314a34b373",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "🏢 Company Intelligence Agent": {
+      "main": [
+        [
+          {
+            "node": "🎯 ICP Qualification Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🚀 Start SDR Workflow": {
+      "main": [
+        [
+          {
+            "node": "📋 Fetch Leads from Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📋 Fetch Leads from Sheet": {
+      "main": [
+        [
+          {
+            "node": "🕐 Set Processed Timestamp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🌐 Search Company Info (Tavily)": {
+      "main": [
+        [
+          {
+            "node": "🏢 Company Intelligence Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🎯 ICP Qualification Agent": {
+      "main": [
+        [
+          {
+            "node": "🔀 Qualified Lead Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔀 Qualified Lead Router": {
+      "main": [
+        [
+          {
+            "node": "🔎 Search Executive Team",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "🔎 Search Leadership Team",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "🔎 Search Decision Maker LinkedIn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "🔎 Site:LinkedIn Decision Maker",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "❌ Mark Lead as Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📊 Outreach Strategy Agent": {
+      "main": [
+        [
+          {
+            "node": "✉️ Email Generator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✉️ Email Generator Agent": {
+      "main": [
+        [
+          {
+            "node": "🔍 Email Quality Checker Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Email Quality Checker Agent": {
+      "main": [
+        [
+          {
+            "node": "📊 Email Quality Gate (Score ≥ 80?)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📊 Email Quality Gate (Score ≥ 80?)": {
+      "main": [
+        [
+          {
+            "node": "📧 Create Gmail Draft",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "✅ Mark Lead as Email Drafted",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🔄 Increment Retry Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕵️ Lead Finder Agent": {
+      "main": [
+        [
+          {
+            "node": "🔬 Lead Enrichment Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔎 Search Executive Team": {
+      "main": [
+        [
+          {
+            "node": "🔗 Merge Search Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "🔎 Site:LinkedIn Decision Maker": {
+      "main": [
+        [
+          {
+            "node": "🔗 Merge Search Results",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "🔎 Search Leadership Team": {
+      "main": [
+        [
+          {
+            "node": "🔗 Merge Search Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔎 Search Decision Maker LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "🔗 Merge Search Results",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "🔗 Merge Search Results": {
+      "main": [
+        [
+          {
+            "node": "⚙️ Group Results by Company",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Is Lead Status Pending?": {
+      "main": [
+        [
+          {
+            "node": "🌐 Search Company Info (Tavily)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "✅ Mark Lead as Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕐 Set Processed Timestamp": {
+      "main": [
+        [
+          {
+            "node": "🔍 Is Lead Status Pending?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✔️ Lead Validation Agent": {
+      "main": [
+        [
+          {
+            "node": "📊 Outreach Strategy Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔬 Lead Enrichment Agent": {
+      "main": [
+        [
+          {
+            "node": "✔️ Lead Validation Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Group Results by Company": {
+      "main": [
+        [
+          {
+            "node": "🕵️ Lead Finder Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔄 Increment Retry Counter": {
+      "main": [
+        [
+          {
+            "node": "⚠️ Max Retries Reached? (< 3)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚠️ Max Retries Reached? (< 3)": {
+      "main": [
+        [
+          {
+            "node": "✉️ Email Generator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "❌ Mark Lead as Email Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Company Research": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🏢 Company Intelligence Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Company Research Data": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "🏢 Company Intelligence Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 ICP Scoring": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🎯 ICP Qualification Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 ICP Score": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "🎯 ICP Qualification Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Lead Enrichment": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🔬 Lead Enrichment Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Lead Enrichment": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "🔬 Lead Enrichment Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Lead Validation": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "✔️ Lead Validation Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Lead Validation": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "✔️ Lead Validation Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Outreach Strategy": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "📊 Outreach Strategy Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Outreach Strategy": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "📊 Outreach Strategy Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Lead Finder ": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🕵️ Lead Finder Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Lead Finder": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "🕵️ Lead Finder Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Email Generator": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "✉️ Email Generator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Generated Email": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "✉️ Email Generator Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧠 Email QA": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🔍 Email Quality Checker Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Email QA Result": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "🔍 Email Quality Checker Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ba1b4e52-7398-4f24-82a4-dfccd684c1e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f025895da678cb4fc12f4acdfd5d883fef626fe2d9d637d00615b0630cf4c48d"
+  },
+  "nodeGroups": [],
+  "id": "9tFrhWkYcDoDBGbQ",
+  "tags": []
+}
